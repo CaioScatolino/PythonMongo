@@ -47,8 +47,16 @@ class GerenciadorTarefasApp:
         self.entrada_titulo = tk.Entry(quadro_entrada, font=("Arial", 11), width=55)
         
         self.entrada_titulo.grid(row=0, column=1, padx=5, pady=5, sticky="w", columnspan=3)
-                   
         
+        rotulo_descricao = tk.Label(quadro_entrada, text="Descrição da Tarefa", bg="#f0f0f0", font=("Arial", 12))
+        
+        rotulo_descricao.grid(row=1, column=0, padx=5, pady=5, sticky="ne")
+        
+        self.texto_descricao = tk.Text(quadro_entrada, font=("Arial", 11), width=55, height=5)    
+        
+        self.texto_descricao.grid(row=1, column=1, padx=5, pady=5, sticky="w", columnspan=3)
+        
+          
 janela_principal = tk.Tk()
 
 app = GerenciadorTarefasApp(janela_principal)

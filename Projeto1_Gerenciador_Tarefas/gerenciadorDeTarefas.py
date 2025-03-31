@@ -46,7 +46,7 @@ class GerenciadorTarefasApp:
         
         self.entrada_titulo = tk.Entry(quadro_entrada, font=("Arial", 11), width=55)
         
-        self.titulo.grid(row=0, column=1, padx=5, pady=5, sticky="w", columnspan=3)
+        self.entrada_titulo.grid(row=0, column=1, padx=5, pady=5, sticky="w", columnspan=3)
                    
         
 janela_principal = tk.Tk()

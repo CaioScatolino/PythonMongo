@@ -91,7 +91,49 @@ class GerenciadorTarefasApp:
         self.combo_status.current(0)
 
         quadro_botoes = tk.Frame(self.janela, bg="#f0f0f0")
-        quadro_botoes.pack(pady=10, padx=10, fill="x")
+        quadro_botoes.pack(pady=10)
+
+        botao_adicionar = tk.Button(
+            quadro_botoes,
+            text="Adicionar Tarefa",
+            command=self.adicionar_tarefa,
+            bg="#a5d6a7",
+            font=("Arial", 12, "bold"),
+            width=18,
+        )
+
+        botao_adicionar.grid(row=0, column=0, padx=10, pady=5)
+
+        botao_atualizar = tk.Button(
+            quadro_botoes,
+            text="Atualizar Tarefa",
+            command=self.atualizar_tarefa,
+            bg="#fff59d",
+            font=("Arial", 12, "bold"),
+            width=18,
+        )
+
+        botao_atualizar.grid(row=0, column=1, padx=10, pady=5)
+
+        botao_excluir = tk.Button(
+            quadro_botoes,
+            text="Excluir Tarefa",
+            command=self.excluir_tarefa,
+            bg="red",
+            font=("Arial", 12, "bold"),
+            width=18,
+        )
+
+        botao_excluir.grid(row=0, column=2, padx=10, pady=5)
+
+    def adicionar_tarefa(self):
+        print("Adicionando tarefa...")
+
+    def atualizar_tarefa(self):
+        print("Atualizando tarefa...")
+
+    def excluir_tarefa(self):
+        print("Excluindo tarefa...")
 
 
 janela_principal = tk.Tk()

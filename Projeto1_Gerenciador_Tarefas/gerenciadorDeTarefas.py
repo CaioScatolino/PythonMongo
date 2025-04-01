@@ -155,12 +155,72 @@ class GerenciadorTarefasApp:
             font=("Arial", 11, "bold"),
             width=15,
         )
-        
+
         botao_filtro.grid(row=0, column=2, padx=5)
 
+        quadro_arvores = tk.Frame(self.janela, bg="#f0f0f0")
+
+        quadro_arvores.pack(pady=20, fill="both", expand=True)
+
+        barra_rolagem = tk.Scrollbar(quadro_arvores, orient="vertical")
+        barra_rolagem.pack(side="right", fill="y")
+
+        self.arvore_tarefas = ttk.Treeview(
+            quadro_arvores,
+            columns=("Título", "Descrição", "Status"),
+            show="headings",
+            height=15,
+            yscrollcommand=barra_rolagem.set,
+        )
+        
+        self.arvore_tarefas.heading("Título", text="Título")
+        
+        self.arvore_tarefas.heading("Descrição", text="Descrição")
+        
+        self.arvore_tarefas.heading("Status", text="Status")
+        
+        self.arvore_tarefas.column("Título", width=220)
+        
+        self.arvore_tarefas.column("Descrição", width=480)
+        
+        self.arvore_tarefas.column("Status", width=120)
+        
+        self.arvore_tarefas.bind("<<TreeviewSelect>>", self.ao_clicar_tarefa)
+        
+        self.arvore_tarefas.pack(pady=10, padx=10, fill="both", expand=True)
+        
+        barra_rolagem.config(command=self.arvore_tarefas.yview)
+        self.arvore_tarefas = None
+        
+        self.carregar_tarefas()
+        
+   
 
     def adicionar_tarefa(self):
-        print("Adicionando tarefa...")
+        
+        titulo = self.entrada_titulo.get().strip()
+        
+        descricao = self.texto_descricao.get("1.0", tk.END).strip()
+        
+        status = self.var_status.get()
+        
+        if not titulo:
+            messagebox.showwarning("Aviso", "O Título da tarefa não pode estar vazio!")
+            return
+        
+        nova_tarefa = {
+            "titulo": titulo,
+            "descricao": descricao,
+            "status": status
+        }
+        
+        self.colecao.insert_one(nova_tarefa)
+        
+        self.carregar_tarefas()
+        
+        self.limpar_campos_entrada()
+        
+        messagebox.showinfo("Sucesso", "Tarefa adicionada com sucesso!")
 
     def atualizar_tarefa(self):
         print("Atualizando tarefa...")
@@ -170,6 +230,15 @@ class GerenciadorTarefasApp:
 
     def aplicar_filtro(self):
         print("Aplicando filtro tarefa...")
+        
+    def ao_clicar_tarefa(self, event):
+        print("Tarefa selecionada...")
+        
+    def carregar_tarefas(self, filtro_status = None):
+         print('...')
+         
+    def limpar_campos_entrada(self):
+        print("Limpou")
 
 
 janela_principal = tk.Tk()

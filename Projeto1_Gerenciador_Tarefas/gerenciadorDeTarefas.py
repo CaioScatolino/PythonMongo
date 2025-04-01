@@ -87,10 +87,11 @@ class GerenciadorTarefasApp:
         )
 
         self.combo_status.grid(row=2, column=1, padx=5, pady=5)
-        
+
         self.combo_status.current(0)
-        
-        
+
+        quadro_botoes = tk.Frame(self.janela, bg="#f0f0f0")
+        quadro_botoes.pack(pady=10, padx=10, fill="x")
 
 
 janela_principal = tk.Tk()

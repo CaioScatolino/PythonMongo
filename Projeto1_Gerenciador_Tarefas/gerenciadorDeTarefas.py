@@ -119,12 +119,33 @@ class GerenciadorTarefasApp:
             quadro_botoes,
             text="Excluir Tarefa",
             command=self.excluir_tarefa,
-            bg="red",
+            bg="#ef9a9a",
             font=("Arial", 12, "bold"),
             width=18,
         )
 
         botao_excluir.grid(row=0, column=2, padx=10, pady=5)
+
+        quadro_filtro = tk.Frame(self.janela, bg="#f0f0f0")
+        quadro_filtro.pack(pady=10)
+
+        rotulo_filtro = tk.Label(
+            quadro_filtro, text="Filtrar por Status:", bg="#f0f0f0", font=("Arial", 12)
+        )
+
+        rotulo_filtro.grid(row=0, column=0, padx=5)
+
+        self.var_filtro = tk.StringVar()
+
+        self.combo_filtro = ttk.Combobox(
+            quadro_filtro,
+            textvariable=self.var_filtro,
+            values=["Todos", "Pendente", "Em Andamento", "Concluída"],
+            state="readonly",
+            font=("Arial", 11),
+        )
+
+        self.combo_filtro.grid(row=0, column=1, padx=5)
 
     def adicionar_tarefa(self):
         print("Adicionando tarefa...")

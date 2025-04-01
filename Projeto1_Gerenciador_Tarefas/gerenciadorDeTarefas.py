@@ -172,54 +172,47 @@ class GerenciadorTarefasApp:
             height=15,
             yscrollcommand=barra_rolagem.set,
         )
-        
+
         self.arvore_tarefas.heading("Título", text="Título")
-        
+
         self.arvore_tarefas.heading("Descrição", text="Descrição")
-        
+
         self.arvore_tarefas.heading("Status", text="Status")
-        
+
         self.arvore_tarefas.column("Título", width=220)
-        
+
         self.arvore_tarefas.column("Descrição", width=480)
-        
+
         self.arvore_tarefas.column("Status", width=120)
-        
+
         self.arvore_tarefas.bind("<<TreeviewSelect>>", self.ao_clicar_tarefa)
-        
+
         self.arvore_tarefas.pack(pady=10, padx=10, fill="both", expand=True)
-        
+
         barra_rolagem.config(command=self.arvore_tarefas.yview)
-        self.arvore_tarefas = None
-        
+        # self.arvore_tarefas = None
+
         self.carregar_tarefas()
-        
-   
 
     def adicionar_tarefa(self):
-        
         titulo = self.entrada_titulo.get().strip()
-        
+
         descricao = self.texto_descricao.get("1.0", tk.END).strip()
-        
+
         status = self.var_status.get()
-        
+
         if not titulo:
             messagebox.showwarning("Aviso", "O Título da tarefa não pode estar vazio!")
             return
-        
-        nova_tarefa = {
-            "titulo": titulo,
-            "descricao": descricao,
-            "status": status
-        }
-        
+
+        nova_tarefa = {"titulo": titulo, "descricao": descricao, "status": status}
+
         self.colecao.insert_one(nova_tarefa)
-        
+
         self.carregar_tarefas()
-        
+
         self.limpar_campos_entrada()
-        
+
         messagebox.showinfo("Sucesso", "Tarefa adicionada com sucesso!")
 
     def atualizar_tarefa(self):
@@ -230,15 +223,34 @@ class GerenciadorTarefasApp:
 
     def aplicar_filtro(self):
         print("Aplicando filtro tarefa...")
-        
+
     def ao_clicar_tarefa(self, event):
         print("Tarefa selecionada...")
+
+    def carregar_tarefas(self, filtro_status=None):
         
-    def carregar_tarefas(self, filtro_status = None):
-         print('...')
-         
+        for item in self.arvore_tarefas.get_children():
+            self.arvore_tarefas.delete(item)
+
+        consulta = {}
+
+        if filtro_status and filtro_status in ["Pendente", "Concluída"]:
+            consulta = {"status": filtro_status}
+
+        tarefas = self.colecao.find(consulta)
+
+        for tarefa in tarefas:
+            self.arvore_tarefas.insert(
+                "",
+                tk.END,
+                values=(tarefa["titulo"], tarefa["descricao"], tarefa["status"]),
+                iid=str(tarefa["_id"]),
+            )
+
     def limpar_campos_entrada(self):
-        print("Limpou")
+        self.entrada_titulo.delete(0, tk.END)
+        self.texto_descricao.delete("1.0", tk.END)
+        self.var_status.set("Pendente")
 
 
 janela_principal = tk.Tk()

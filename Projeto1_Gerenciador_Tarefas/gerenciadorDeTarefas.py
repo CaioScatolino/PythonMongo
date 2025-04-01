@@ -147,6 +147,18 @@ class GerenciadorTarefasApp:
 
         self.combo_filtro.grid(row=0, column=1, padx=5)
 
+        botao_filtro = tk.Button(
+            quadro_filtro,
+            text="Aplicar Filtro",
+            command=self.aplicar_filtro,
+            bg="#81d4fa",
+            font=("Arial", 11, "bold"),
+            width=15,
+        )
+        
+        botao_filtro.grid(row=0, column=2, padx=5)
+
+
     def adicionar_tarefa(self):
         print("Adicionando tarefa...")
 
@@ -155,6 +167,9 @@ class GerenciadorTarefasApp:
 
     def excluir_tarefa(self):
         print("Excluindo tarefa...")
+
+    def aplicar_filtro(self):
+        print("Aplicando filtro tarefa...")
 
 
 janela_principal = tk.Tk()

@@ -70,6 +70,28 @@ class GerenciadorTarefasApp:
             row=1, column=1, padx=5, pady=5, sticky="w", columnspan=3
         )
 
+        rotulo_status = tk.Label(
+            quadro_entrada, text="Status da Tarefa", bg="#f0f0f0", font=("Arial", 12)
+        )
+        rotulo_status.grid(row=2, column=0, padx=5, pady=5, sticky="we")
+
+        self.var_status = tk.StringVar()
+
+        self.combo_status = ttk.Combobox(
+            quadro_entrada,
+            textvariable=self.var_status,
+            font=("Arial", 11),
+            width=53,
+            values=["Pendente", "Em Andamento", "Concluída"],
+            state="readonly",
+        )
+
+        self.combo_status.grid(row=2, column=1, padx=5, pady=5)
+        
+        self.combo_status.current(0)
+        
+        
+
 
 janela_principal = tk.Tk()
 

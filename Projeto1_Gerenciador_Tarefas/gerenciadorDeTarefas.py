@@ -216,32 +216,33 @@ class GerenciadorTarefasApp:
         messagebox.showinfo("Sucesso", "Tarefa adicionada com sucesso!")
 
     def atualizar_tarefa(self):
-        
         if not self.id_tarefa_selecionada:
             messagebox.showwarning("Aviso", "Selecione uma tarefa para atualizar!")
             return
-        
+
         titulo = self.entrada_titulo.get().strip()
         descricao = self.texto_descricao.get("1.0", tk.END).strip()
         status = self.var_status.get()
-        
+
         if not titulo:
             messagebox.showwarning("Aviso", "O Título da tarefa não pode estar vazio!")
             return
-        
+
         dados_atualizados = {
-            "set": {
-                "tituolo": titulo,
+            "$set": {
+                "titulo": titulo,
                 "descricao": descricao,
                 "status": status,
             }
         }
-        
-        self.colecao.update_one({"_id": ObjectId(self.id_tarefa_selecionada)}, dados_atualizados)
-        
+
+        self.colecao.update_one(
+            {"_id": ObjectId(self.id_tarefa_selecionada)}, dados_atualizados
+        )
+
         self.carregar_tarefas()
         self.limpar_campos_entrada()
-        
+
         self.id_tarefa_selecionada = None
         messagebox.showinfo("Sucesso", "Tarefa atualizada com sucesso!")
 
@@ -252,10 +253,25 @@ class GerenciadorTarefasApp:
         print("Aplicando filtro tarefa...")
 
     def ao_clicar_tarefa(self, event):
-        print("Tarefa selecionada...")
+        selecionado = self.arvore_tarefas.selection()
+
+        if selecionado:
+            self.id_tarefa_selecionada = selecionado[0]
+
+            dados_tarefa = self.colecao.find_one(
+                {"_id": ObjectId(self.id_tarefa_selecionada)}
+            )
+
+            if dados_tarefa:
+                self.entrada_titulo.delete(0, tk.END)
+                self.entrada_titulo.insert(0, dados_tarefa["titulo"])
+
+                self.texto_descricao.delete("1.0", tk.END)
+                self.texto_descricao.insert("1.0", dados_tarefa["descricao"])
+
+                self.var_status.set(dados_tarefa["status"])
 
     def carregar_tarefas(self, filtro_status=None):
-        
         for item in self.arvore_tarefas.get_children():
             self.arvore_tarefas.delete(item)
 

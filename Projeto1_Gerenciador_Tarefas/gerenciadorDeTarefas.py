@@ -216,7 +216,34 @@ class GerenciadorTarefasApp:
         messagebox.showinfo("Sucesso", "Tarefa adicionada com sucesso!")
 
     def atualizar_tarefa(self):
-        print("Atualizando tarefa...")
+        
+        if not self.id_tarefa_selecionada:
+            messagebox.showwarning("Aviso", "Selecione uma tarefa para atualizar!")
+            return
+        
+        titulo = self.entrada_titulo.get().strip()
+        descricao = self.texto_descricao.get("1.0", tk.END).strip()
+        status = self.var_status.get()
+        
+        if not titulo:
+            messagebox.showwarning("Aviso", "O Título da tarefa não pode estar vazio!")
+            return
+        
+        dados_atualizados = {
+            "set": {
+                "tituolo": titulo,
+                "descricao": descricao,
+                "status": status,
+            }
+        }
+        
+        self.colecao.update_one({"_id": ObjectId(self.id_tarefa_selecionada)}, dados_atualizados)
+        
+        self.carregar_tarefas()
+        self.limpar_campos_entrada()
+        
+        self.id_tarefa_selecionada = None
+        messagebox.showinfo("Sucesso", "Tarefa atualizada com sucesso!")
 
     def excluir_tarefa(self):
         print("Excluindo tarefa...")

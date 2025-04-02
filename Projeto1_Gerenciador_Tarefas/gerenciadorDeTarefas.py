@@ -146,7 +146,7 @@ class GerenciadorTarefasApp:
         )
 
         self.combo_filtro.grid(row=0, column=1, padx=5)
-        
+
         self.combo_filtro.current(0)
 
         botao_filtro = tk.Button(
@@ -250,22 +250,26 @@ class GerenciadorTarefasApp:
 
     def excluir_tarefa(self):
         if not self.id_tarefa_selecionada:
-            
             messagebox.showwarning("Aviso", "Selecione uma tarefa para excluir!")
             return
-        
+
         confirmar = messagebox.askyesno("Confirmação", "Deseja excluir esta tarefa?")
         if confirmar:
-            
             self.colecao.delete_one({"_id": ObjectId(self.id_tarefa_selecionada)})
             self.carregar_tarefas()
-            
+            self.limpar_campos_entrada()
+
             self.id_tarefa_selecionada = None
-            
+
             messagebox.showinfo("Sucesso", "Tarefa excluída com sucesso!")
 
     def aplicar_filtro(self):
-        print("Aplicando filtro tarefa...")
+        filtro_escolhido = self.var_filtro.get()
+        
+        if filtro_escolhido == "Todos":
+            self.carregar_tarefas()
+        else:
+            self.carregar_tarefas(filtro_status=filtro_escolhido)
 
     def ao_clicar_tarefa(self, event):
         selecionado = self.arvore_tarefas.selection()
@@ -292,7 +296,7 @@ class GerenciadorTarefasApp:
 
         consulta = {}
 
-        if filtro_status and filtro_status in ["Pendente", "Concluída"]:
+        if filtro_status and filtro_status in ["Pendente", "Em Andamento" ,"Concluída"]:
             consulta = {"status": filtro_status}
 
         tarefas = self.colecao.find(consulta)

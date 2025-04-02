@@ -146,6 +146,8 @@ class GerenciadorTarefasApp:
         )
 
         self.combo_filtro.grid(row=0, column=1, padx=5)
+        
+        self.combo_filtro.current(0)
 
         botao_filtro = tk.Button(
             quadro_filtro,
@@ -247,7 +249,20 @@ class GerenciadorTarefasApp:
         messagebox.showinfo("Sucesso", "Tarefa atualizada com sucesso!")
 
     def excluir_tarefa(self):
-        print("Excluindo tarefa...")
+        if not self.id_tarefa_selecionada:
+            
+            messagebox.showwarning("Aviso", "Selecione uma tarefa para excluir!")
+            return
+        
+        confirmar = messagebox.askyesno("Confirmação", "Deseja excluir esta tarefa?")
+        if confirmar:
+            
+            self.colecao.delete_one({"_id": ObjectId(self.id_tarefa_selecionada)})
+            self.carregar_tarefas()
+            
+            self.id_tarefa_selecionada = None
+            
+            messagebox.showinfo("Sucesso", "Tarefa excluída com sucesso!")
 
     def aplicar_filtro(self):
         print("Aplicando filtro tarefa...")
